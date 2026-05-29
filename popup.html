@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>选中即译 - 设置</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 340px;
+      font-family: -apple-system, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      padding: 16px;
+      background: #fff;
+      color: #222;
+    }
+    h2 { font-size: 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
+    h2 small { font-size: 12px; color: #888; font-weight: normal; }
+    .group { margin-bottom: 14px; }
+    .group label {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #444;
+    }
+    .group .desc {
+      font-size: 11px;
+      color: #999;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    select, input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    select:focus, input:focus { border-color: #0078d4; box-shadow: 0 0 0 2px rgba(0,120,212,0.15); }
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background: #0078d4;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn:hover { background: #106ebe; }
+    .btn:active { background: #005a9e; }
+    .status {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+    }
+    .status.success { display: block; background: #dff6dd; color: #1e5631; }
+    .status.error { display: block; background: #fde7e9; color: #a80000; }
+    .footer { margin-top: 12px; text-align: center; font-size: 11px; color: #bbb; }
+    hr { border: none; border-top: 1px solid #eee; margin: 12px 0; }
+    .provider-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin: 8px 0;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .provider-card code {
+      background: #e8e8e8;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🌐 选中即译 <small>v1.1</small></h2>
+
+<div class="group">
+  <label>翻译源</label>
+  <select id="provider">
+    <option value="mymemory">MyMemory（免配置，直连）</option>
+    <option value="baidu">百度翻译（国内直连）</option>
+    <option value="llm">🤖 大模型翻译</option>
+  </select>
+  <div class="desc">
+    大模型翻译质量最好，自带语境理解。需自己准备 API Key。
+  </div>
+</div>
+
+<!-- 百度翻译 -->
+<div id="baiduSettings" style="display:none">
+  <div class="group">
+    <label>百度翻译 App ID</label>
+    <input type="text" id="baiduAppId" placeholder="在百度翻译开放平台申请">
+  </div>
+  <div class="group">
+    <label>百度翻译密钥</label>
+    <input type="text" id="baiduKey" placeholder="对应的密钥">
+  </div>
+  <div class="desc">
+    申请：<a href="https://api.fanyi.baidu.com/" target="_blank" style="color:#0078d4">百度翻译开放平台</a> → 通用翻译 → 标准版免费
+  </div>
+</div>
+
+<!-- 大模型翻译 -->
+<div id="llmSettings" style="display:none">
+  <div class="group">
+    <label>API 地址</label>
+    <input type="text" id="llmEndpoint" placeholder="https://api.deepseek.com/v1/chat/completions">
+    <div class="desc">OpenAI 兼容格式的完整 URL</div>
+  </div>
+  <div class="group">
+    <label>API Key</label>
+    <input type="password" id="llmApiKey" placeholder="sk-...">
+  </div>
+  <div class="group">
+    <label>模型名称</label>
+    <input type="text" id="llmModel" placeholder="deepseek-chat / gpt-4o-mini / qwen-plus">
+    <div class="desc">填你调用的模型 ID</div>
+  </div>
+
+  <div class="provider-card">
+    <strong>国内推荐配置：</strong><br>
+    🔹 <b>DeepSeek</b><br>
+    &nbsp;&nbsp;接口：<code>https://api.deepseek.com/v1/chat/completions</code><br>
+    &nbsp;&nbsp;模型：<code>deepseek-chat</code><br>
+    &nbsp;&nbsp;申请：<a href="https://platform.deepseek.com/" target="_blank" style="color:#0078d4">platform.deepseek.com</a><br>
+    🔹 <b>通义千问</b><br>
+    &nbsp;&nbsp;接口：<code>https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions</code><br>
+    &nbsp;&nbsp;模型：<code>qwen-plus</code>
+  </div>
+</div>
+
+<div class="group">
+  <label>目标语言</label>
+  <select id="targetLang">
+    <option value="zh-CN">简体中文</option>
+    <option value="zh-TW">繁体中文</option>
+    <option value="en">English</option>
+    <option value="ja">日本語</option>
+    <option value="ko">한국어</option>
+    <option value="fr">Français</option>
+    <option value="de">Deutsch</option>
+    <option value="es">Español</option>
+  </select>
+</div>
+
+<button class="btn" id="saveBtn">💾 保存设置</button>
+<div id="status" class="status"></div>
+
+<hr>
+<div style="font-size:12px;color:#666;text-align:center">
+  选中文字 → 自动弹出翻译浮窗 · 拖拽标题栏移动 · ESC 关闭
+</div>
+<div style="font-size:10px;color:#aaa;text-align:center;margin-top:6px">
+  🔒 所有 API Key 仅存本机，不同步云端
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "选中即译",
+  "version": "1.2.0",
+  "description": "选中文字自动翻译，支持大模型 / 百度 / MyMemory。API Key 仅存本机，不同步云端。",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://api.mymemory.translated.net/*",
+    "https://fanyi-api.baidu.com/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "选中即译"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
